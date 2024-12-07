@@ -16,7 +16,15 @@
 
 <header class="w3-padding">
 
-    <h1 class="w3-text-red">My Portfolio!</h1>
+    <h1 class="w3-text-red">Event Management System</h1>
+    <br>
+    @if (Auth::check())
+        You are logged in as {{auth()->user()->first}} {{auth()->user()->last}} | 
+        <a href="/console/logout">Log Out</a> | 
+        <a href="/console/dashboard">Dashboard</a>
+    @else
+        <a href="/console/login">Login</a>
+    @endif
 
 </header>
 
@@ -30,19 +38,6 @@
 
     Footer Text | 
     Copyright {{date('Y')}}
-    <a href="#">Facebook</a> | 
-    <a href="#">Instagram</a>
-
-    <br>
-
-    @if (Auth::check())
-        You are logged in as {{auth()->user()->first}} {{auth()->user()->last}} | 
-        <a href="/console/logout">Log Out</a> | 
-        <a href="/console/dashboard">Dashboard</a>
-    @else
-        <a href="/console/login">Login</a>
-    @endif
-
 </footer>
 
 </body>

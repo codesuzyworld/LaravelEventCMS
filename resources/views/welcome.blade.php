@@ -2,61 +2,56 @@
 
 @section ('content')
 
-<section class="w3-padding">
-        
-    <h2 class="w3-text-blue">About Me!</h2>
+<div class="w3-container w3-padding">
+    <form method="get" action="/" class="w3-margin-bottom">
+        <!-- Search Bar -->
+        <div class="w3-row-padding">
+            <div class="w3-col m8">
+                <input type="text" name="search" class="w3-input" placeholder="Search by Event Name" 
+                    value="{{ request('search') }}">
+            </div>
+            <div class="w3-col m4">
+                <button class="w3-button w3-blue" type="submit">Search</button>
+                @if(request('search') || request('type'))
+                    <a href="/" class="w3-button w3-red">Reset</a>
+                @endif
+            </div>
+        </div>
 
-    <p>
-        Quisque felis ex, pellentesque vel elementum eu, bibendum vel massa. Donec id feugiat 
-        erat. Aliquam commodo rutrum velit, vitae vestibulum purus ullamcorper vestibulum. Orci 
-        varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-    </p>
-
-    <h3>My Skills</h3>
-
-    <ul>
-        <li>PHP</li>
-        <li>Laravel</li>
-        <li>MySQL</li>
-    </ul>
-
-</section>
-
-<hr>
 
 <section class="w3-padding w3-container">
 
-    <h2 class="w3-text-blue">Projects</h2>
+    <h2 class="w3-text-blue">Events ({{ $events->count() }})</h2>
 
-    @foreach ($projects as $project)
+    @foreach ($events as $event)
 
         <div class="w3-card w3-margin">
 
             <div class="w3-container w3-blue">
 
-                <h3>{{$project->title}}</h3>
+                <h3>{{$event->title}}</h3>
 
             </div>
             
-            @if ($project->image)
+            @if ($event->image)
                 <div class="w3-container w3-margin-top">
-                    <img src="{{asset('storage/'.$project->image)}}" width="200">
+                    <img src="{{asset('storage/'.$event->image)}}" width="200">
                 </div>
             @endif
 
             <div class="w3-container w3-padding">
 
-                @if ($project->url)
-                    View Project: <a href="{{$project->url}}">{{$project->url}}</a>
+                @if ($event->url)
+                    View Event: <a href="{{$event->url}}">{{$event->url}}</a>
                 @endif
 
                 <p>
-                    Posted: {{$project->created_at->format('M j, Y')}}
+                    Posted: {{$event->created_at->format('M j, Y')}}
                     <br>
-                    Type: {{$project->type->title}}
+                    Type: {{$event->type->title}}
                 </p>
 
-                <a href="/project/{{$project->slug}}" class="w3-button w3-green">View Project Details</a>
+                <a href="/event/{{$event->slug}}" class="w3-button w3-green">View Event Details</a>
 
             </div>
         
@@ -68,17 +63,5 @@
 </section>
 
 <hr>
-
-<section class="w3-padding">
-
-    <h2 class="w3-text-blue">Contact Me</h2>
-
-    <p>
-        Phone: 111.222.3333
-        <br>
-        Email: <a href="mailto:email@address.com">email@address.com</a>
-    </p>
-
-</section>
 
 @endsection
