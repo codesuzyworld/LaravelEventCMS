@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Models\Event;
 use App\Models\Type;
+use App\Models\User;
+use App\Models\Location;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 
@@ -27,41 +29,38 @@ class EventsController extends Controller
     {
         return view('events.add', [
             'types' => Type::all(),
+            'locations' => Location::all(),
         ]);
     }
 
     public function add()
     {
-
         $attributes = request()->validate([
             'title' => 'required',
             'slug' => 'required|unique:events|regex:/^[A-z\-]+$/',
             'url' => 'nullable|url',
             'content' => 'required',
-            'dateStart' => 'required',
-            'dateEnd' => 'required', 
+            'dateStart' => 'required|date',
+            'dateEnd' => 'required|date', 
             'timeStart' => 'required',
             'timeEnd' => 'required',
-            'eventLink' => 'nullable|url',
-            'dateAdded' => 'required',
-            'location_id' => 'required',
-            'type_id' => 'required',
+            'location_id' => 'required|exists:locations,id',
+            'type_id' => 'required|exists:types,id',
         ]);
 
         $event = new Event();
         $event->title = $attributes['title'];
         $event->slug = $attributes['slug'];
-        $event->url = $attributes['url'];
+        $event->eventLink = $attributes['url'] ?? null;
         $event->content = $attributes['content'];
         $event->dateStart = $attributes['dateStart'];
         $event->dateEnd = $attributes['dateEnd'];
         $event->timeStart = $attributes['timeStart'];
         $event->timeEnd = $attributes['timeEnd'];
-        $event->eventLink = $attributes['eventLink'];
-        $event->dateAdded = $attributes['dateAdded'];
         $event->location_id = $attributes['location_id'];
         $event->type_id = $attributes['type_id'];
         $event->user_id = Auth::user()->id;
+        $event->dateAdded = now();
         $event->save();
 
         return redirect('/console/events/list')
@@ -73,41 +72,37 @@ class EventsController extends Controller
         return view('events.edit', [
             'event' => $event,
             'types' => Type::all(),
+            'locations' => Location::all(),
         ]);
     }
 
-    public function edit(Project $project)
+    public function edit(Event $event)
     {
-
         $attributes = request()->validate([
             'title' => 'required',
             'slug' => [
                 'required',
-                Rule::unique('projects')->ignore($project->id),
+                Rule::unique('events')->ignore($event->id),
                 'regex:/^[A-z\-]+$/',
             ],
-            'url' => 'nullable|url',
+            'eventLink' => 'nullable|url',
             'content' => 'required',
-            'dateStart' => 'required',
-            'dateEnd' => 'required', 
+            'dateStart' => 'required|date',
+            'dateEnd' => 'required|date', 
             'timeStart' => 'required',
             'timeEnd' => 'required',
-            'eventLink' => 'nullable|url',
-            'dateAdded' => 'required',
-            'location_id' => 'required',
-            'type_id' => 'required',
+            'location_id' => 'required|exists:locations,id',
+            'type_id' => 'required|exists:types,id',
         ]);
 
-        $project->title = $attributes['title'];
+        $event->title = $attributes['title'];
         $event->slug = $attributes['slug'];
-        $event->url = $attributes['url'];
+        $event->eventLink = $attributes['eventLink'] ?? null;
         $event->content = $attributes['content'];
         $event->dateStart = $attributes['dateStart'];
         $event->dateEnd = $attributes['dateEnd'];
         $event->timeStart = $attributes['timeStart'];
         $event->timeEnd = $attributes['timeEnd'];
-        $event->eventLink = $attributes['eventLink'];
-        $event->dateAdded = $attributes['dateAdded'];
         $event->location_id = $attributes['location_id'];
         $event->type_id = $attributes['type_id'];
         $event->save();
@@ -139,7 +134,6 @@ class EventsController extends Controller
 
     public function image(Event $event)
     {
-
         $attributes = request()->validate([
             'image' => 'required|image',
         ]);

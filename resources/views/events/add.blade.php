@@ -21,12 +21,12 @@
         </div>
 
         <div class="w3-margin-bottom">
-            <label for="url">URL:</label>
-            <input type="url" name="url" id="url" value="{{old('url')}}">
+            <label for="eventLink">Event URL:</label>
+            <input type="url" name="eventLink" id="eventLink" value="{{old('eventLink')}}">
 
-            @if ($errors->first('url'))
+            @if ($errors->first('eventLink'))
                 <br>
-                <span class="w3-text-red">{{$errors->first('url')}}</span>
+                <span class="w3-text-red">{{$errors->first('eventLink')}}</span>
             @endif
         </div>
         <div class="w3-margin-bottom">
@@ -109,21 +109,21 @@
                 @foreach ($locations as $location)
                     <option value="{{$location->id}}"
                         {{$location->id == old('location_id') ? 'selected' : ''}}>
-                        {{$location->title}}
+                        {{$location->name}}
                     </option>
                 @endforeach
             </select>
-            @if ($errors->first('type_id'))
+            @if ($errors->first('location_id'))
                 <br>
-                <span class="w3-text-red">{{$errors->first('type_id')}}</span>
+                <span class="w3-text-red">{{$errors->first('location_id')}}</span>
             @endif
         </div>
 
-        <button type="submit" class="w3-button w3-green">Add Project</button>
+            <button type="submit" class="w3-button w3-green">Add Event</button>
 
     </form>
 
-    <a href="/console/projects/list">Back to Project List</a>
+    <a href="/console/events/list">Back to Event List</a>
 
 </section>
 
