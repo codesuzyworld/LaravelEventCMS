@@ -8,6 +8,7 @@ use App\Http\Controllers\TypesController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\EventsController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,3 +76,11 @@ Route::post('/console/types/add', [TypesController::class, 'add'])->middleware('
 Route::get('/console/types/edit/{type:id}', [TypesController::class, 'editForm'])->where('type', '[0-9]+')->middleware('auth');
 Route::post('/console/types/edit/{type:id}', [TypesController::class, 'edit'])->where('type', '[0-9]+')->middleware('auth');
 Route::get('/console/types/delete/{type:id}', [TypesController::class, 'delete'])->where('type', '[0-9]+')->middleware('auth');
+
+//Locations
+Route::get('/console/locations/list', [LocationController::class, 'list'])->middleware('auth');
+Route::get('/console/locations/add', [LocationController::class, 'addForm'])->middleware('auth');
+Route::post('/console/locations/add', [LocationController::class, 'add'])->middleware('auth');
+Route::get('/console/locations/edit/{location:id}', [LocationController::class, 'editForm'])->where('location', '[0-9]+')->middleware('auth');
+Route::post('/console/locations/edit/{location:id}', [LocationController::class, 'edit'])->where('location', '[0-9]+')->middleware('auth');
+Route::get('/console/locations/delete/{location:id}', [LocationController::class, 'delete'])->where('location', '[0-9]+')->middleware('auth');

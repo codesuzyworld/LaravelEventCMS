@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Type extends Model
+class Location extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,9 @@ class Type extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title'
+        'name',
+        'address',
+        'gMapLink',
     ];
 
     public function events()
